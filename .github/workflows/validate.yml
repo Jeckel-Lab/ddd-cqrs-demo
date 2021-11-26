@@ -31,8 +31,8 @@ jobs:
         run: composer install --no-interaction --prefer-dist --dev
       - name: GrumPHP
         run: ./vendor/bin/grumphp run --testsuite=github_actions
-      - name: Infection
-        run: ./vendor/bin/infection
-        env:
-          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
+#      - name: Infection
+#        run: ./vendor/bin/infection
+#        env:
+#          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
 
