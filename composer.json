@@ -1,0 +1,37 @@
+{
+    "name": "jeckel/ddd-cqrs-demo",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "jeckel-lab/contract": "dev-main",
+        "jeckel-lab/command-bus": "dev-main",
+        "jeckel-lab/identity-contract": "dev-main",
+        "slim/slim": "^4.9",
+        "php-di/php-di": "^6.3",
+        "php-di/slim-bridge": "^3.2",
+        "jeckel-lab/clock": "^1.2",
+        "psr/log": "^3.0"
+    },
+    "require-dev": {
+        "phpro/grumphp": "^1.6",
+        "vimeo/psalm": "^4.12",
+        "phpstan/phpstan": "^1.2",
+        "phpmd/phpmd": "dev-master",
+        "squizlabs/php_codesniffer": "^3.6",
+        "roave/security-advisories": "dev-latest",
+        "maglnet/composer-require-checker": "^3.5"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "JeckelLab\\Demo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Julien Mercier-Rojas",
+            "email": "julien@jeckel-lab.fr"
+        }
+    ],
+    "minimum-stability": "stable"
+}
