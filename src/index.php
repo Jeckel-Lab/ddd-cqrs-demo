@@ -10,7 +10,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use DI\ContainerBuilder;
-use JeckelLab\Contract\Kernel\CommandBus\CommandBus;
+use JeckelLab\Contract\Core\CommandDispatcher\CommandBus\CommandBus;
 use JeckelLab\Demo\Application\Shared\Identity\UserId;
 use JeckelLab\Demo\Application\UserManagement\Command\ActivateUser;
 use JeckelLab\Demo\Application\UserManagement\Command\CreateUser;
@@ -27,7 +27,7 @@ $container = $containerBuilder->build();
 $commandBus = $container->get(CommandBus::class);
 
 $commandBus->dispatch(
-    new CreateUser('Bob', 'Bobby')
+    new CreateUser('Bob', 'bobby@example.com')
 );
 $commandBus->dispatch(
     new ActivateUser(UserId::new(), new DateTimeImmutable())

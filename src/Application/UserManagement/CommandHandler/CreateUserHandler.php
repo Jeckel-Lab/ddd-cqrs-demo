@@ -9,10 +9,12 @@ declare(strict_types=1);
 
 namespace JeckelLab\Demo\Application\UserManagement\CommandHandler;
 
-use JeckelLab\CommandBus\CommandResponse\CommandResponseSuccess;
-use JeckelLab\Contract\Application\Command\Command;
-use JeckelLab\Contract\Application\Command\CommandHandler;
-use JeckelLab\Contract\Application\Command\CommandResponse;
+use JeckelLab\CommandDispatcher\CommandHandler\CommandHandlerTrait;
+use JeckelLab\CommandDispatcher\CommandResponse\CommandResponseSuccess;
+use JeckelLab\Contract\Core\CommandDispatcher\Command\Command;
+use JeckelLab\Contract\Core\CommandDispatcher\CommandHandler\CommandHandler;
+use JeckelLab\Contract\Core\CommandDispatcher\CommandResponse\CommandResponse;
+use JeckelLab\Contract\Core\CommandDispatcher\Exception\InvalidCommandException;
 use JeckelLab\Demo\Application\UserManagement\Command\CreateUser;
 use Psr\Log\LoggerInterface;
 
@@ -23,23 +25,35 @@ use Psr\Log\LoggerInterface;
  */
 class CreateUserHandler implements CommandHandler
 {
+    /**
+     * @use CommandHandlerTrait<CreateUser>
+     */
+    use CommandHandlerTrait;
+
     public function __construct(private LoggerInterface $logger)
     {
     }
 
-    public static function accept(Command $command): bool
+    /**
+     * @return list<class-string<Command>>
+     * @psalm-mutation-free
+     */
+    public static function getHandledCommands(): array
     {
-        return $command instanceof CreateUser;
+        return [ CreateUser::class ];
     }
 
     /**
      * @param CreateUser $command
      * @return CommandResponse
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
-    public function handle(Command $command): CommandResponse
+    public function __invoke(Command $command): CommandResponse
     {
-        $this->logger->info("In CreateUserHandler");
+        $this->validateCommand($command, self::getHandledCommands());
+        $this->logger->info(
+            sprintf('In CreateUserHandler for %s <%s>', $command->login, $command->email)
+        );
 
         return new CommandResponseSuccess();
     }

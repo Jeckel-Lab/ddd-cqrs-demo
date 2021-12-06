@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace JeckelLab\Demo\Application\UserManagement\Command;
 
 use DateTimeImmutable;
-use JeckelLab\Contract\Application\Command\Command;
+use JeckelLab\Contract\Core\CommandDispatcher\Command\Command;
 use JeckelLab\Demo\Application\Shared\Identity\UserId;
 
 /**

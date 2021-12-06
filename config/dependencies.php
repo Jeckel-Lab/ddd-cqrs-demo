@@ -8,28 +8,35 @@
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
-use JeckelLab\CommandBus\CommandBus\CommandDispatcher;
-use JeckelLab\CommandBus\CommandBus\CommandHandlerResolver;
-use JeckelLab\CommandBus\CommandBus\CommandHandlerResolverInterface;
-use JeckelLab\CommandBus\CommandBus\Decorator\LoggerDecorator;
-use JeckelLab\Contract\Kernel\CommandBus\CommandBus;
-use JeckelLab\Demo\Application\UserManagement\CommandHandler;
+use JeckelLab\CommandDispatcher\CommandBus\Decorator\LoggerDecorator;
+use JeckelLab\CommandDispatcher\CommandBusBuilder;
+use JeckelLab\Contract\Core\CommandDispatcher\Command\Command;
+use JeckelLab\Contract\Core\CommandDispatcher\CommandBus\CommandBus;
+use JeckelLab\Contract\Core\CommandDispatcher\CommandHandler\CommandHandler;
+use JeckelLab\Demo\Application\UserManagement\CommandHandler\ActivateUserHandler;
+use JeckelLab\Demo\Application\UserManagement\CommandHandler\CreateUserHandler;
 use JeckelLab\Demo\Kernel\Logger;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 return static function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions(
         [
             'command-handlers' => [
-                CommandHandler\ActivateUserHandler::class,
-                CommandHandler\CreateUserHandler::class,
+                ActivateUserHandler::class,
+                CreateUserHandler::class,
             ],
-            CommandHandlerResolverInterface::class => DI\create(CommandHandlerResolver::class)
-                ->constructor(DI\get('command-handlers')),
             LoggerInterface::class => DI\autowire(Logger::class),
-            CommandBus::class => DI\autowire(LoggerDecorator::class)
-                ->method('decorate', DI\get(CommandDispatcher::class))
-                ->method('setLogger', DI\get(LoggerInterface::class))
+            LoggerDecorator::class => DI\autowire(LoggerDecorator::class)
+                ->method('setLogger', DI\get(LoggerInterface::class)),
+            CommandBus::class => function(ContainerInterface $container) {
+                /** @var array<class-string<CommandHandler<Command>>> $handlers */
+                $handlers = $container->get('command-handlers');
+                return (new CommandBusBuilder($container))
+                    ->addCommandHandler(...$handlers)
+                    ->addDecorator(LoggerDecorator::class)
+                    ->build();
+            },
         ]
     );
 };

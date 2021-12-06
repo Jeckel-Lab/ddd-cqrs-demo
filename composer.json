@@ -4,7 +4,7 @@
     "require": {
         "php": ">=8.1",
         "jeckel-lab/contract": "dev-main",
-        "jeckel-lab/command-bus": "dev-main",
+        "jeckel-lab/command-dispatcher": "dev-feature/php8-version",
         "jeckel-lab/identity-contract": "dev-main",
         "slim/slim": "^4.9",
         "php-di/php-di": "^6.3",

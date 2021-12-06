@@ -15,6 +15,7 @@ use JeckelLab\IdentityContract\AbstractUuidIdentity;
  * Class UserId
  * @package JeckelLab\Demo\Application\Shared\Identity
  * @psalm-immutable
+ * @method static UserId new()
  */
 final class UserId extends AbstractUuidIdentity
 {
