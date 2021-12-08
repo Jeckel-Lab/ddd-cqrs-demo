@@ -27,8 +27,6 @@ return static function (ContainerBuilder $containerBuilder) {
                 CreateUserHandler::class,
             ],
             LoggerInterface::class => DI\autowire(Logger::class),
-            LoggerDecorator::class => DI\autowire(LoggerDecorator::class)
-                ->method('setLogger', DI\get(LoggerInterface::class)),
             CommandBus::class => function(ContainerInterface $container) {
                 /** @var array<class-string<CommandHandler<Command>>> $handlers */
                 $handlers = $container->get('command-handlers');

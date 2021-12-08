@@ -21,8 +21,6 @@ $containerBuilder->useAutowiring(true);
 
 $container = $containerBuilder->build();
 
-
-
 /** @var CommandBus $commandBus */
 $commandBus = $container->get(CommandBus::class);
 
